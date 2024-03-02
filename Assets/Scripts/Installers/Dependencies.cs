@@ -27,23 +27,4 @@ public class Dependencies
         }
     }
 
-    public class Game : IInitializable
-    {
-        [Inject] private IHealth _health;
-        
-        public void Initialize()
-        {
-            Debug.Log($"Game init {_health.GetHealth()}");
-        }
-    }
-    
-    public class Scene : IInitializable
-    {
-        [Inject] private IHealth _health;
-        
-        public void Initialize()
-        {
-            Debug.Log($"Game init {_health.GetHealth()}");
-        }
-    }
 }

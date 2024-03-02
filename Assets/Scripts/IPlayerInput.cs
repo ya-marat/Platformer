@@ -3,5 +3,7 @@ using UnityEngine;
 
 public interface IPlayerInput
 {
-    IReadOnlyReactiveProperty<Vector2> InputValue { get; }
+    Vector2 MoveDirection { get; }
+    bool Jump { get; }
+    bool Fire { get; }
 }

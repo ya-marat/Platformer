@@ -389,6 +389,16 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &425890366 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2539158962644382978, guid: 427a13b4eaee38942bc8afd1f8f982fc, type: 3}
+  m_PrefabInstance: {fileID: 4208304395129278969}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1142930345 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 3548985353397850126, guid: 427a13b4eaee38942bc8afd1f8f982fc, type: 3}
+  m_PrefabInstance: {fileID: 4208304395129278969}
+  m_PrefabAsset: {fileID: 0}
 --- !u!50 &1298506710 stripped
 Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 280324657855826248, guid: 427a13b4eaee38942bc8afd1f8f982fc, type: 3}
@@ -527,14 +537,26 @@ PrefabInstance:
       propertyPath: m_Constraints
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 1643427699982235281, guid: 427a13b4eaee38942bc8afd1f8f982fc, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7591190935919734652, guid: 427a13b4eaee38942bc8afd1f8f982fc, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7591190935919734652, guid: 427a13b4eaee38942bc8afd1f8f982fc, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8299047842597449897, guid: 427a13b4eaee38942bc8afd1f8f982fc, type: 3}
       propertyPath: speed
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 8299047842597449897, guid: 427a13b4eaee38942bc8afd1f8f982fc, type: 3}
+      propertyPath: _animator
+      value: 
+      objectReference: {fileID: 1142930345}
     - target: {fileID: 8299047842597449897, guid: 427a13b4eaee38942bc8afd1f8f982fc, type: 3}
       propertyPath: playerInput
       value: 
@@ -543,6 +565,14 @@ PrefabInstance:
       propertyPath: rigidbody2D
       value: 
       objectReference: {fileID: 1298506710}
+    - target: {fileID: 8299047842597449897, guid: 427a13b4eaee38942bc8afd1f8f982fc, type: 3}
+      propertyPath: _layerMask.m_Bits
+      value: 55
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299047842597449897, guid: 427a13b4eaee38942bc8afd1f8f982fc, type: 3}
+      propertyPath: _groundCheckerTransform
+      value: 
+      objectReference: {fileID: 425890366}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
