@@ -1,38 +1,29 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class PlayerController : MonoBehaviour, ICharacterEntity
 {
-    [SerializeField] private PlayerInput playerInput;
     [SerializeField] private Rigidbody2D _rigidbody2D;
     [SerializeField] private Animator _animator;
     [SerializeField] private Transform _groundCheckerTransform;
     [SerializeField] private LayerMask _layerMask;
     
+    [Inject] private IPlayerInput playerInput;
+    [Inject] private GameConfig _gameConfig;
+
     private ComponentsHolder _componentsHolder = new();
-    private IPlayerInput _input;
-    
+
     public IPlayerInput Input => playerInput;
     public Rigidbody2D Rigidbody2D => _rigidbody2D;
     public Animator Animator => _animator;
     public Transform EntityTransform => transform;
     public Transform GroundCheckerTransform => _groundCheckerTransform;
     public ComponentsHolder ComponentsHolder => _componentsHolder;
-    
-    public void Init(IPlayerInput input)
+
+    public void Init()
     {
-        _input = input;
-    }
-    
-    private void Awake()
-    {
-        _componentsHolder.AddComponent(new MoveHorizontalComponent(10));
-        _componentsHolder.AddComponent(new FlipComponent());
-        _componentsHolder.AddComponent(new AnimatorComponent());
-        _componentsHolder.AddComponent(new JumpComponent());
-        _componentsHolder.AddComponent(new GroundComponent(_layerMask));
-        
         foreach (var component in _componentsHolder.Components)
         {
             component.InitComponent(this);
@@ -45,6 +36,8 @@ public class PlayerController : MonoBehaviour, ICharacterEntity
         {
             component.UpdateComponent(this);
         }
+        
+        _componentsHolder.GetComponent<JumpComponent>().Set(_gameConfig.PlayerConfig.JumpTime, _gameConfig.PlayerConfig.JumpPower, _gameConfig.PlayerConfig.FallMultiplier, _gameConfig.PlayerConfig.JumpMultiplier);
     }
 
     private void FixedUpdate()

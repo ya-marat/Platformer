@@ -1,23 +1,31 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class JumpComponent : BaseCharacterComponent
 {
-        
-    // Move to config
+    private const float MaxHeight = 2f;
+    
     private bool _isJumping;
+    private bool _isJumpingPressed;
     private Vector2 _gravityVector;
     private float _jumpCounter;
-    private float _jumpTime = 0.1f;
-    private float _jumpPower = 2f;
-    private float _fallMultiplier = .2f;
-    private float _jumpMultiplier = 0.5f;
+    private float _jumpTime;
+    private float _jumpPower;
+    private float _fallMultiplier;
+    private float _jumpMultiplier;
+
+    private float _currentYPosition;
 
     private GroundComponent _groundComponent;
     
-    public JumpComponent()
+    public JumpComponent(float jumpTime, float jumpPower, float fallMultiplier, float jumpMultiplier)
     {
+        _jumpTime = jumpTime;
+        _jumpPower = jumpPower;
+        _fallMultiplier = fallMultiplier;
+        _jumpMultiplier = jumpMultiplier;
         _gravityVector = new Vector2(0, -Physics2D.gravity.y);
     }
 
@@ -28,14 +36,19 @@ public class JumpComponent : BaseCharacterComponent
 
     public override void FixedUpdateComponent(ICharacterEntity characterEntity)
     {
-        if (characterEntity.Input.Jump && _groundComponent.IsGround)
+        if (characterEntity.Input.Jump && _groundComponent.IsGround && !_isJumpingPressed)
         { 
             characterEntity.Rigidbody2D.velocity = new Vector2(characterEntity.Rigidbody2D.velocity.x, _jumpPower);
             _isJumping = true;
+            _isJumpingPressed = true;
             _jumpCounter = 0;
+            _currentYPosition = characterEntity.EntityTransform.transform.position.y + MaxHeight;
+            
+            //_currentYPosition = Mathf.Sqrt(-2.0f * Physics2D.gravity.y * _jumpPower);
+            //characterEntity.Rigidbody2D.velocity = new Vector2(characterEntity.Rigidbody2D.velocity.x, yvel);
         }
 
-        if (characterEntity.Rigidbody2D.velocity.y > 0 && _isJumping)
+        if (_isJumping)
         {
             _jumpCounter += Time.deltaTime;
             if (_jumpCounter > _jumpTime)
@@ -51,25 +64,42 @@ public class JumpComponent : BaseCharacterComponent
                 currentJumpMultiplier = _jumpMultiplier * (1 - t);
             }
             
-            //characterEntity.Rigidbody2D.velocity += _gravityVector * currentJumpMultiplier * Time.deltaTime;
-            characterEntity.Rigidbody2D.velocity += _gravityVector * currentJumpMultiplier;
+            var yValue = characterEntity.Rigidbody2D.velocity.y + (_gravityVector.y * currentJumpMultiplier);
+            
+            Vector2 rbVelocity = new Vector2(characterEntity.Rigidbody2D.velocity.x, yValue);
+
+            var time = _jumpPower / _jumpMultiplier;
+            
+
+            characterEntity.Rigidbody2D.velocity = rbVelocity;
+            
         }
 
-
-        if (characterEntity.Rigidbody2D.velocity.y < 0)
+        if (characterEntity.Rigidbody2D.velocity.y < 0 || characterEntity.Rigidbody2D.velocity.y > _currentYPosition)
         {
+            _isJumping = false;
             characterEntity.Rigidbody2D.velocity -= _gravityVector * (_fallMultiplier);
         }
 
-        if (characterEntity.Input.Jump)
+        if (!characterEntity.Input.Jump && _isJumpingPressed)
         {
             _isJumping = false;
+            _isJumpingPressed = false;
             _jumpCounter = 0;
 
             if (characterEntity.Rigidbody2D.velocity.y > 0)
             {
-                characterEntity.Rigidbody2D.velocity = new Vector2(characterEntity.Rigidbody2D.velocity.x, characterEntity.Rigidbody2D.velocity.y * 0.8f);
+                characterEntity.Rigidbody2D.velocity = new Vector2(characterEntity.Rigidbody2D.velocity.x, characterEntity.Rigidbody2D.velocity.y * 0.5f);
             }
         }
+    }
+
+    [Obsolete("This method will be deleted, when set a right balance of the jumo")]
+    public void Set(float jumpTime, float jumpPower, float fallMultiplier, float jumpMultiplier)
+    {
+        _jumpTime = jumpTime;
+        _jumpPower = jumpPower;
+        _fallMultiplier = fallMultiplier;
+        _jumpMultiplier = jumpMultiplier;
     }
 }

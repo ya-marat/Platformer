@@ -1,20 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 public class GroundComponent : BaseCharacterComponent
 {
     private bool _isGround = true;
     private RaycastHit2D[] _hits2D;
-    private int _layerMask;
+    private LayerMask _layerMask;
     private float _distance;
     private int _castsCount;
     private Vector2 _boxCollideSize;
     
     public bool IsGround => _isGround;
 
-    public GroundComponent(int layerMask)
+    public GroundComponent(LayerMask layerMask)
     {
         _layerMask = layerMask;
         _hits2D = new RaycastHit2D [2];
