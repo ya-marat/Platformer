@@ -7,6 +7,7 @@ public class GameInstaller : MonoInstaller
 {
     [SerializeField] private SpawnPointsController _spawnPointsControllerInstance;
     [SerializeField] private PlayerInput _playerInput;
+    [SerializeField] private PlayerCamera _playerCamera;
     
     public override void InstallBindings()
     {
@@ -14,5 +15,6 @@ public class GameInstaller : MonoInstaller
         Container.BindInterfacesTo<GameService>().AsSingle();
         Container.BindInterfacesTo<PlayerInput>().FromInstance(_playerInput).AsSingle();
         Container.Bind<SpawnPointsController>().FromInstance(_spawnPointsControllerInstance).AsSingle();
+        Container.Bind<PlayerCamera>().FromInstance(_playerCamera).AsSingle();
     }
 }

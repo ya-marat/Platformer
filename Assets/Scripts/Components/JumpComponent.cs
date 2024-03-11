@@ -16,8 +16,6 @@ public class JumpComponent : BaseCharacterComponent
     private float _fallMultiplier;
     private float _jumpMultiplier;
 
-    private float _currentYPosition;
-
     private GroundComponent _groundComponent;
     
     public JumpComponent(float jumpTime, float jumpPower, float fallMultiplier, float jumpMultiplier)
@@ -42,10 +40,11 @@ public class JumpComponent : BaseCharacterComponent
             _isJumping = true;
             _isJumpingPressed = true;
             _jumpCounter = 0;
-            _currentYPosition = characterEntity.EntityTransform.transform.position.y + MaxHeight;
-            
+
             //_currentYPosition = Mathf.Sqrt(-2.0f * Physics2D.gravity.y * _jumpPower);
             //characterEntity.Rigidbody2D.velocity = new Vector2(characterEntity.Rigidbody2D.velocity.x, yvel);
+            
+            
         }
 
         if (_isJumping)
@@ -64,20 +63,10 @@ public class JumpComponent : BaseCharacterComponent
                 currentJumpMultiplier = _jumpMultiplier * (1 - t);
             }
             
-            var yValue = characterEntity.Rigidbody2D.velocity.y + (_gravityVector.y * currentJumpMultiplier);
-            
-            Vector2 rbVelocity = new Vector2(characterEntity.Rigidbody2D.velocity.x, yValue);
-
-            var time = _jumpPower / _jumpMultiplier;
-            
-
-            characterEntity.Rigidbody2D.velocity = rbVelocity;
-            
+            characterEntity.Rigidbody2D.velocity += _gravityVector * currentJumpMultiplier;
         }
-
-        if (characterEntity.Rigidbody2D.velocity.y < 0 || characterEntity.Rigidbody2D.velocity.y > _currentYPosition)
+        else
         {
-            _isJumping = false;
             characterEntity.Rigidbody2D.velocity -= _gravityVector * (_fallMultiplier);
         }
 

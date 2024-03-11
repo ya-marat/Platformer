@@ -14,6 +14,7 @@ public class SpawnEntitiesService : ISpawnEntitiesService
     [Inject] private SpawnPointsController _spawnPointsController;
     [Inject] private GameConfig _gameConfig;
     [Inject] private DiContainer _diContainer;
+    [Inject] private PlayerCamera _playerCamera;
 
     public ICharacterEntity SpawnPlayerEntity()
     {
@@ -32,6 +33,9 @@ public class SpawnEntitiesService : ISpawnEntitiesService
         controller.Init();
 
         _diContainer.Inject(entity);
+        
+        _playerCamera.Init(entity.EntityTransform);
+        
         return entity;
     }
 }
