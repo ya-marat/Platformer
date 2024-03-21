@@ -17,7 +17,7 @@ MonoBehaviour:
     _groundCheckLayers:
       serializedVersion: 2
       m_Bits: 55
-    _jumpTime: 0.16
+    _jumpTime: 0.2
     _jumpPower: 6.34
     _fallMultiplier: 0.2
-    _jumpMultiplier: 0.81
+    _jumpMultiplier: 0.5

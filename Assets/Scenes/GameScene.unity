@@ -690,7 +690,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spawnPointsControllerInstance: {fileID: 1490955629}
-  _playerInput: {fileID: 203947262}
+  _platformerPlayerInput: {fileID: 203947262}
   _playerCamera: {fileID: 94425211}
 --- !u!1 &1819050053
 GameObject:

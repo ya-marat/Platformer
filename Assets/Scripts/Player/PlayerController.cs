@@ -8,14 +8,13 @@ public class PlayerController : MonoBehaviour, ICharacterEntity
     [SerializeField] private Rigidbody2D _rigidbody2D;
     [SerializeField] private Animator _animator;
     [SerializeField] private Transform _groundCheckerTransform;
-    [SerializeField] private LayerMask _layerMask;
     
-    [Inject] private IPlayerInput playerInput;
+    [Inject] private ICommandHolderGetter _commandHolderGetter;
     [Inject] private GameConfig _gameConfig;
 
     private ComponentsHolder _componentsHolder = new();
-
-    public IPlayerInput Input => playerInput;
+    
+    public ICommandsHolder CommandsHolder => _commandHolderGetter.CommandsHolder;
     public Rigidbody2D Rigidbody2D => _rigidbody2D;
     public Animator Animator => _animator;
     public Transform EntityTransform => transform;

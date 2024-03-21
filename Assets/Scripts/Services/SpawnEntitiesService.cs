@@ -22,6 +22,7 @@ public class SpawnEntitiesService : ISpawnEntitiesService
             _spawnPointsController.PlayerSpawnPoint.position, Quaternion.identity);
 
         var entity = newPlayerInstance.GetComponent<ICharacterEntity>();
+        _diContainer.Inject(entity);
         
         entity.ComponentsHolder.AddComponent(new MoveHorizontalComponent(_gameConfig.PlayerConfig.MoveSpeed));
         entity.ComponentsHolder.AddComponent(new FlipComponent());
@@ -30,11 +31,9 @@ public class SpawnEntitiesService : ISpawnEntitiesService
         entity.ComponentsHolder.AddComponent(new GroundComponent(_gameConfig.PlayerConfig.GroundCheckLayers));
         
         var controller = newPlayerInstance.GetComponent<PlayerController>();
-        controller.Init();
-
-        _diContainer.Inject(entity);
         
         _playerCamera.Init(entity.EntityTransform);
+        controller.Init();
         
         return entity;
     }

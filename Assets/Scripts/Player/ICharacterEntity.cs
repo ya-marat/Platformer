@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface ICharacterEntity
 {
-    public IPlayerInput Input { get; }
+    public ICommandsHolder CommandsHolder { get; }
     public Rigidbody2D Rigidbody2D { get; }
     public Animator Animator { get; }
     public Transform EntityTransform { get; }

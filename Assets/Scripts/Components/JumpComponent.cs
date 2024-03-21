@@ -17,7 +17,8 @@ public class JumpComponent : BaseCharacterComponent
     private float _jumpMultiplier;
 
     private GroundComponent _groundComponent;
-    
+    private ICommandStatus<bool> _jumpCommand;
+
     public JumpComponent(float jumpTime, float jumpPower, float fallMultiplier, float jumpMultiplier)
     {
         _jumpTime = jumpTime;
@@ -30,11 +31,12 @@ public class JumpComponent : BaseCharacterComponent
     public override void InitComponent(ICharacterEntity characterEntity)
     {
         _groundComponent = characterEntity.ComponentsHolder.GetComponent<GroundComponent>();
+        _jumpCommand = characterEntity.CommandsHolder.GetCommandStatus<bool>(CommandType.Jump);
     }
 
     public override void FixedUpdateComponent(ICharacterEntity characterEntity)
     {
-        if (characterEntity.Input.Jump && _groundComponent.IsGround && !_isJumpingPressed)
+        if (_jumpCommand.Value && _groundComponent.IsGround && !_isJumpingPressed)
         { 
             characterEntity.Rigidbody2D.velocity = new Vector2(characterEntity.Rigidbody2D.velocity.x, _jumpPower);
             _isJumping = true;
@@ -70,7 +72,7 @@ public class JumpComponent : BaseCharacterComponent
             characterEntity.Rigidbody2D.velocity -= _gravityVector * (_fallMultiplier);
         }
 
-        if (!characterEntity.Input.Jump && _isJumpingPressed)
+        if (!_jumpCommand.Value && _isJumpingPressed)
         {
             _isJumping = false;
             _isJumpingPressed = false;
