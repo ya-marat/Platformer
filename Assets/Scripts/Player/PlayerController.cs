@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour, ICharacterEntity
             component.UpdateComponent(this);
         }
         
-        _componentsHolder.GetComponent<JumpComponent>().Set(_gameConfig.PlayerConfig.JumpTime, _gameConfig.PlayerConfig.JumpPower, _gameConfig.PlayerConfig.FallMultiplier, _gameConfig.PlayerConfig.JumpMultiplier);
+//        _componentsHolder.GetComponent<JumpComponent>().Set(_gameConfig.PlayerConfig.JumpTime, _gameConfig.PlayerConfig.JumpPower, _gameConfig.PlayerConfig.FallMultiplier, _gameConfig.PlayerConfig.JumpMultiplier);
     }
 
     private void FixedUpdate()

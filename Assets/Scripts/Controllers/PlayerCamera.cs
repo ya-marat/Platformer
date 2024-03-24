@@ -11,10 +11,12 @@ public class PlayerCamera : MonoBehaviour
     private Transform _cameraTarget;
     private Vector3 velocity;
 
-    private float xRighEdge = 50f;
-    private float xLeftEdge = -50f;
+    private float xRighEdge = 80f;
+    private float xLeftEdge = -70f;
     private float yUpEdge = 20f;
-    private float yDownEdge = -20f;
+    private float yDownEdge = 0f;
+
+    public Camera GameCamera => GetComponent<Camera>(); // TODO
 
     public void Init(Transform target)
     {

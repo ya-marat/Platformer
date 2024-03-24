@@ -45,8 +45,6 @@ public class JumpComponent : BaseCharacterComponent
 
             //_currentYPosition = Mathf.Sqrt(-2.0f * Physics2D.gravity.y * _jumpPower);
             //characterEntity.Rigidbody2D.velocity = new Vector2(characterEntity.Rigidbody2D.velocity.x, yvel);
-            
-            
         }
 
         if (_isJumping)
@@ -67,7 +65,7 @@ public class JumpComponent : BaseCharacterComponent
             
             characterEntity.Rigidbody2D.velocity += _gravityVector * currentJumpMultiplier;
         }
-        else
+        else if(!_groundComponent.IsGround)
         {
             characterEntity.Rigidbody2D.velocity -= _gravityVector * (_fallMultiplier);
         }
