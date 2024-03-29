@@ -9,30 +9,27 @@ public class BackgroundController : MonoBehaviour
     [SerializeField] private float normalizedValue;
     
     [Inject] private PlayerCamera _playerCamera;
+    [Inject] private MapController _mapController;
 
     private SpriteRenderer _spriteRenderer;
 
     private float xLeftMaxEdge;
-    private float xRightMaxEdge;
-    private float distance;
     private float mapDistance;
-    private float _spriteWidth;
+    private float spriteBgWidth;
+    private float bgSpriteMoveAvailableDistance;
 
-    private Vector2 _mapEndPoint = Vector2.right * 80;
-    private Vector2 _starPoint = Vector2.right * -70;
+    private void Awake()
+    {
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteBgWidth = _spriteRenderer.sprite.bounds.size.x;
+        Debug.Log($"Map distance {mapDistance}");
+    }
 
     public void Init()
     {
-        
-    }
-
-    private void Start()
-    {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-        _spriteWidth = _spriteRenderer.sprite.bounds.size.x;
-        CalculateCameraEdgesPosition();
-        distance = Mathf.Abs(xRightMaxEdge - xLeftMaxEdge);
-        mapDistance = (_mapEndPoint - _starPoint).sqrMagnitude;
+        CalculateBgPosition();
+        Vector2 cameraPos = _playerCamera.GameCamera.transform.position;
+        bgSpriteMoveAvailableDistance = (cameraPos - new Vector2(xLeftMaxEdge, 0)).magnitude * 2;
     }
 
     private void LateUpdate()
@@ -42,25 +39,29 @@ public class BackgroundController : MonoBehaviour
 
     private void UpdateBGPosition()
     {
-        CalculateCameraEdgesPosition();
-        CalculateNormalizeBetweenCharacterAndEndPoint();
+        CalculateBgPosition();
         var cameraPosition = _playerCamera.transform.position;
         cameraPosition.z = 0;
-        cameraPosition.x = xLeftMaxEdge - distance * normalizedValue;
+        cameraPosition.x = xLeftMaxEdge - bgSpriteMoveAvailableDistance * normalizedValue;
         transform.position = cameraPosition;
     }
 
-    private void CalculateCameraEdgesPosition()
+    private void CalculateBgPosition()
     {
-        xRightMaxEdge = ((float)Screen.width / Screen.height * _playerCamera.GameCamera.orthographicSize - (_spriteWidth / 2 * _spriteRenderer.transform.localScale.x));
-        xRightMaxEdge += _playerCamera.GameCamera.transform.position.x;
-        xLeftMaxEdge = -((float)Screen.width / Screen.height * _playerCamera.GameCamera.orthographicSize - (_spriteWidth / 2 * _spriteRenderer.transform.localScale.x));
-        xLeftMaxEdge += _playerCamera.GameCamera.transform.position.x;
+        xLeftMaxEdge = _playerCamera.LeftEdgeCameraPosition + spriteBgWidth / 2 * _spriteRenderer.transform.localScale.x;
+        var endPointCharacterDistance = Mathf.Abs(_playerCamera.XLeftEdge -_playerCamera.transform.position.x);
+        normalizedValue = endPointCharacterDistance / _playerCamera.AvailableCameraXPosRange;
     }
 
-    private void CalculateNormalizeBetweenCharacterAndEndPoint()
+    private void OnDrawGizmos()
     {
-        var endPointCharacterDistance = (_mapEndPoint - (Vector2)_playerCamera.GameCamera.transform.position).sqrMagnitude;
-        normalizedValue = (mapDistance - endPointCharacterDistance) / mapDistance;
+        if (_playerCamera == null) return;
+        
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawSphere(new Vector3(_playerCamera.transform.position.x, 0, 0), 0.5f);
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(new Vector3(xLeftMaxEdge, 0 , 0), 0.5f);
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(new Vector3(xLeftMaxEdge - bgSpriteMoveAvailableDistance, 0 , 0), 0.5f);
     }
 }

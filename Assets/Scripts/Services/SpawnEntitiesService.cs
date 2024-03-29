@@ -14,7 +14,7 @@ public class SpawnEntitiesService : ISpawnEntitiesService
     [Inject] private SpawnPointsController _spawnPointsController;
     [Inject] private GameConfig _gameConfig;
     [Inject] private DiContainer _diContainer;
-    [Inject] private PlayerCamera _playerCamera;
+    
 
     public ICharacterEntity SpawnPlayerEntity()
     {
@@ -31,8 +31,6 @@ public class SpawnEntitiesService : ISpawnEntitiesService
         entity.ComponentsHolder.AddComponent(new GroundComponent(_gameConfig.PlayerConfig.GroundCheckLayers));
         
         var controller = newPlayerInstance.GetComponent<PlayerController>();
-        
-        _playerCamera.Init(entity.EntityTransform);
         controller.Init();
         
         return entity;

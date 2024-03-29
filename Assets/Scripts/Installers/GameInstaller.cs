@@ -9,6 +9,7 @@ public class GameInstaller : MonoInstaller
     [SerializeField] private PlatformerPlayerInput _platformerPlayerInput;
     [SerializeField] private PlayerCamera _playerCamera;
     [SerializeField] private BackgroundController _backgroundController;
+    [SerializeField] private MapController _mapController;
     
     public override void InstallBindings()
     {
@@ -18,5 +19,6 @@ public class GameInstaller : MonoInstaller
         Container.Bind<SpawnPointsController>().FromInstance(_spawnPointsControllerInstance).AsSingle();
         Container.Bind<PlayerCamera>().FromInstance(_playerCamera).AsSingle();
         Container.Bind<BackgroundController>().FromInstance(_backgroundController).AsSingle();
+        Container.Bind<MapController>().FromInstance(_mapController).AsSingle();
     }
 }
