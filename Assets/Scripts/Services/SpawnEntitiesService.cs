@@ -15,7 +15,6 @@ public class SpawnEntitiesService : ISpawnEntitiesService
     [Inject] private GameConfig _gameConfig;
     [Inject] private DiContainer _diContainer;
     
-
     public ICharacterEntity SpawnPlayerEntity()
     {
         var newPlayerInstance = Object.Instantiate(_spawnObjectsHolderSo.PlayerEntityPrefab,

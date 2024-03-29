@@ -18,15 +18,15 @@ public class PlayerCamera : MonoBehaviour
     private float leftEdgeCameraPosition;
     private float availableCameraXPosRange;
 
-    private float xRighEdge;
-    private float xLeftEdge;
+    private float _xRighMaxCameraPosition;
+    private float _xLeftMaxCameraPosition;
     private float yUpEdge = 20f;
     private float yDownEdge = 0f;
     
     public float LeftEdgeCameraPosition => -halfWidth + transform.position.x;
     public float RightEdgeCameraPosition => halfWidth + transform.position.x;
-    public float XLeftEdge => xLeftEdge;
-    public float XRightEdge => xRighEdge;
+    public float XLeftMaxCameraPosition => _xLeftMaxCameraPosition;
+    public float XRightMaxCameraPosition => _xRighMaxCameraPosition;
     public float AvailableCameraXPosRange => availableCameraXPosRange;
     public Camera GameCamera => _camera;
 
@@ -39,8 +39,8 @@ public class PlayerCamera : MonoBehaviour
     public void Init(Transform target)
     {
         _cameraTarget = target;
-        xLeftEdge = _mapController.LeftBorderMapPosition.x + halfWidth;
-        xRighEdge = _mapController.RightBorderMapPosition.x - halfWidth;
+        _xLeftMaxCameraPosition = _mapController.LeftBorderMapPosition.x + halfWidth;
+        _xRighMaxCameraPosition = _mapController.RightBorderMapPosition.x - halfWidth;
         availableCameraXPosRange = _mapController.MapHorizontalSize.x - halfWidth * 2;
     }
 
@@ -49,7 +49,7 @@ public class PlayerCamera : MonoBehaviour
         if (_cameraTarget == null) return;
 
         var target = _cameraTarget.position + _offset;
-        target = new Vector3(Mathf.Clamp(target.x, xLeftEdge, xRighEdge), 
+        target = new Vector3(Mathf.Clamp(target.x, _xLeftMaxCameraPosition, _xRighMaxCameraPosition), 
             Mathf.Clamp(target.y, yDownEdge, yUpEdge), target.z);
         transform.position = Vector3.SmoothDamp(transform.position, target, ref velocity, _smoothTime);
     }

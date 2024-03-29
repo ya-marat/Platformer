@@ -19,6 +19,6 @@ public class GameInstaller : MonoInstaller
         Container.Bind<SpawnPointsController>().FromInstance(_spawnPointsControllerInstance).AsSingle();
         Container.Bind<PlayerCamera>().FromInstance(_playerCamera).AsSingle();
         Container.Bind<BackgroundController>().FromInstance(_backgroundController).AsSingle();
-        Container.Bind<MapController>().FromInstance(_mapController).AsSingle();
+        Container.BindInterfacesAndSelfTo<MapController>().FromInstance(_mapController).AsSingle();
     }
 }

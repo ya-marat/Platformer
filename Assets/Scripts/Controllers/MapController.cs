@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Zenject;
 
 public class MapController : MonoBehaviour
 {
@@ -12,13 +13,8 @@ public class MapController : MonoBehaviour
     public Vector2 LeftBorderMapPosition => leftMapPosition;
     public Vector2 RightBorderMapPosition => rightMapPosition;
     public Vector2 MapHorizontalSize => mapHorizontalSize;
-    
-    private void Awake()
-    {
-        InitMap();
-    }
-    
-    private void InitMap()
+
+    public void Init()
     {
         _tilemap.CompressBounds();
         var cellBounds = _tilemap.cellBounds;
@@ -27,7 +23,5 @@ public class MapController : MonoBehaviour
         mapHorizontalSize = _tilemap.CellToWorld(_tilemap.size);
         leftMapPosition = _tilemap.CellToWorld(Vector3Int.right * leftBorderCell);
         rightMapPosition = _tilemap.CellToWorld(Vector3Int.right * rightBorderCell);
-        
-        Debug.Log($"size {MapHorizontalSize}");
     }
 }
