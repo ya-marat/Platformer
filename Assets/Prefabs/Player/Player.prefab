@@ -149,7 +149,6 @@ GameObject:
   - component: {fileID: 280324657855826248}
   - component: {fileID: 8299047842597449897}
   - component: {fileID: 6441732427113980963}
-  - component: {fileID: 1949784669157191989}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -197,7 +196,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
@@ -216,6 +215,7 @@ MonoBehaviour:
   _rigidbody2D: {fileID: 280324657855826248}
   _animator: {fileID: 3548985353397850126}
   _groundCheckerTransform: {fileID: 2539158962644382978}
+  sTime: 0
 --- !u!61 &6441732427113980963
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -223,9 +223,9 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7591190935919734652}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: bb259162fce6b284eafe6d984495bf35, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -261,38 +261,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 4.5}
   m_EdgeRadius: 0
---- !u!70 &1949784669157191989
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7591190935919734652}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 2.52, y: 4.45}
-  m_Direction: 0

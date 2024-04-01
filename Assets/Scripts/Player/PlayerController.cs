@@ -11,9 +11,9 @@ public class PlayerController : MonoBehaviour, ICharacterEntity
     
     [Inject] private ICommandHolderGetter _commandHolderGetter;
     [Inject] private GameConfig _gameConfig;
-
-    private ComponentsHolder _componentsHolder = new();
     
+    private ComponentsHolder _componentsHolder = new();
+
     public ICommandsHolder CommandsHolder => _commandHolderGetter.CommandsHolder;
     public Rigidbody2D Rigidbody2D => _rigidbody2D;
     public Animator Animator => _animator;
@@ -35,8 +35,6 @@ public class PlayerController : MonoBehaviour, ICharacterEntity
         {
             component.UpdateComponent(this);
         }
-        
-//        _componentsHolder.GetComponent<JumpComponent>().Set(_gameConfig.PlayerConfig.JumpTime, _gameConfig.PlayerConfig.JumpPower, _gameConfig.PlayerConfig.FallMultiplier, _gameConfig.PlayerConfig.JumpMultiplier);
     }
 
     private void FixedUpdate()

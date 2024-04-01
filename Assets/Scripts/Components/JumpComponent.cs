@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class JumpComponent : BaseCharacterComponent
 {
-    private const float MaxHeight = 2f;
-    
     private bool _isJumping;
     private bool _isJumpingPressed;
     private Vector2 _gravityVector;
@@ -81,14 +79,5 @@ public class JumpComponent : BaseCharacterComponent
                 characterEntity.Rigidbody2D.velocity = new Vector2(characterEntity.Rigidbody2D.velocity.x, characterEntity.Rigidbody2D.velocity.y * 0.5f);
             }
         }
-    }
-
-    [Obsolete("This method will be deleted, when set a right balance of the jumo")]
-    public void Set(float jumpTime, float jumpPower, float fallMultiplier, float jumpMultiplier)
-    {
-        _jumpTime = jumpTime;
-        _jumpPower = jumpPower;
-        _fallMultiplier = fallMultiplier;
-        _jumpMultiplier = jumpMultiplier;
     }
 }

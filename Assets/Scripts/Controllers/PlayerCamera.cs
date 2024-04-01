@@ -13,7 +13,7 @@ public class PlayerCamera : MonoBehaviour
 
     private Transform _cameraTarget;
     private float _smoothTime;
-    private Vector3 _velocity;
+    private Vector3 _velocity = Vector3.one * 2;
     private Camera _camera;
     private float _halfWidth;
     private float _leftEdgeCameraPosition;
@@ -45,7 +45,6 @@ public class PlayerCamera : MonoBehaviour
         _downMaxCameraPosition = _mapController.DownBorderMapYValue + _camera.orthographicSize;
         _upMaxCameraPosition = _mapController.UpBorderMapYValue;
     }
-
     private void LateUpdate()
     {
         if (_cameraTarget == null) return;
@@ -53,6 +52,6 @@ public class PlayerCamera : MonoBehaviour
         var target = _cameraTarget.position + _offset;
         target = new Vector3(Mathf.Clamp(target.x, _leftMaxCameraPosition, _rightMaxCameraPosition), 
             Mathf.Clamp(target.y, _downMaxCameraPosition, _upMaxCameraPosition), target.z);
-        transform.position = Vector3.SmoothDamp(transform.position, target, ref _velocity, _smoothTime);
+        transform.position = Vector3.SmoothDamp(transform.position, target, ref _velocity, _smoothTime * Time.deltaTime);
     }
 }
