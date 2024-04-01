@@ -4,28 +4,32 @@ using Zenject;
 [RequireComponent(typeof(SpriteRenderer))]
 public class BackgroundController : MonoBehaviour
 {
-    [SerializeField] private float normalizedValue;
-    
     [Inject] private PlayerCamera _playerCamera;
 
     private SpriteRenderer _spriteRenderer;
-
+    private float normalizedValueX;
+    private float normalizedValueY;
     private float xLeftMaxEdge;
+    private float yDownMaxEdge;
     private float mapDistance;
-    private float spriteBgWidth;
-    private float bgSpriteMoveAvailableDistance;
+    private Vector3 spriteBgSize;
+    private float bgSpriteMoveAvailableDistanceX;
+    private float bgSpriteMoveAvailableDistanceY;
+
+    private Vector3 SpriteScale => _spriteRenderer.transform.localScale;
 
     private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteBgWidth = _spriteRenderer.sprite.bounds.size.x;
+        spriteBgSize = _spriteRenderer.sprite.bounds.size;
     }
 
     public void Init()
     {
         CalculateBgPosition();
         Vector2 cameraPos = _playerCamera.GameCamera.transform.position;
-        bgSpriteMoveAvailableDistance = (xLeftMaxEdge - cameraPos.x) * 2;
+        bgSpriteMoveAvailableDistanceX = (xLeftMaxEdge - cameraPos.x) * 2;
+        bgSpriteMoveAvailableDistanceY = (yDownMaxEdge - cameraPos.y) * 2;
     }
 
     private void LateUpdate()
@@ -36,13 +40,20 @@ public class BackgroundController : MonoBehaviour
     private void UpdateBGPosition()
     {
         CalculateBgPosition();
-        transform.position = new Vector3(xLeftMaxEdge - bgSpriteMoveAvailableDistance * normalizedValue, 0, 0);;
+        transform.position = new Vector3(xLeftMaxEdge - bgSpriteMoveAvailableDistanceX * normalizedValueX, 
+            yDownMaxEdge - bgSpriteMoveAvailableDistanceY * normalizedValueY);;
     }
 
     private void CalculateBgPosition()
     {
-        xLeftMaxEdge = _playerCamera.LeftEdgeCameraPosition + spriteBgWidth / 2 * _spriteRenderer.transform.localScale.x;
-        var endPointCharacterDistance = Mathf.Abs(_playerCamera.XLeftMaxCameraPosition -_playerCamera.transform.position.x);
-        normalizedValue = endPointCharacterDistance / _playerCamera.AvailableCameraXPosRange;
+        Vector3 transformPosition = _playerCamera.transform.position;
+        xLeftMaxEdge = _playerCamera.LeftEdgeCameraPosition + spriteBgSize.x / 2 * SpriteScale.x;
+        yDownMaxEdge = _playerCamera.DownEdgeCameraPosition + spriteBgSize.y / 2 * SpriteScale.y;
+        var xDistance = Mathf.Abs(_playerCamera.LeftMaxCameraPosition - transformPosition.x);
+        var yDistance = Mathf.Abs(_playerCamera.DownMaxCameraPosition - transformPosition.y);
+        normalizedValueX = Mathf.Clamp01(xDistance / _playerCamera.XAvailableCameraPosRange);
+        normalizedValueY =  Mathf.Clamp01(yDistance / _playerCamera.YAvailableCameraPosRange);
+        
+        Debug.Log($"normal {normalizedValueX} {normalizedValueY}");
     }
 }

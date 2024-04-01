@@ -6,42 +6,44 @@ using Zenject;
 
 public class PlayerCamera : MonoBehaviour
 {
-    [SerializeField] private float _smoothTime = 0.25f;
     [SerializeField] private Vector3 _offset = new Vector3(0, 0, -10f);
 
     [Inject] private MapController _mapController;
+    [Inject] private GameConfig _gameConfig;
 
     private Transform _cameraTarget;
-    private Vector3 velocity;
+    private float _smoothTime;
+    private Vector3 _velocity;
     private Camera _camera;
-    private float halfWidth;
-    private float leftEdgeCameraPosition;
-    private float availableCameraXPosRange;
-
-    private float _xRighMaxCameraPosition;
-    private float _xLeftMaxCameraPosition;
-    private float yUpEdge = 20f;
-    private float yDownEdge = 0f;
+    private float _halfWidth;
+    private float _leftEdgeCameraPosition;
+    private float _rightMaxCameraPosition;
+    private float _leftMaxCameraPosition;
+    private float _upMaxCameraPosition;
+    private float _downMaxCameraPosition;
     
-    public float LeftEdgeCameraPosition => -halfWidth + transform.position.x;
-    public float RightEdgeCameraPosition => halfWidth + transform.position.x;
-    public float XLeftMaxCameraPosition => _xLeftMaxCameraPosition;
-    public float XRightMaxCameraPosition => _xRighMaxCameraPosition;
-    public float AvailableCameraXPosRange => availableCameraXPosRange;
+    public float LeftEdgeCameraPosition => -_halfWidth + transform.position.x;
+    public float DownEdgeCameraPosition => -_camera.orthographicSize + transform.position.y;
+    public float LeftMaxCameraPosition => _leftMaxCameraPosition;
+    public float DownMaxCameraPosition => _downMaxCameraPosition;
+    public float XAvailableCameraPosRange => Mathf.Abs(_rightMaxCameraPosition - _leftMaxCameraPosition);
+    public float YAvailableCameraPosRange => Mathf.Abs(_upMaxCameraPosition - _downMaxCameraPosition);
     public Camera GameCamera => _camera;
 
     private void Awake()
     {
         _camera = GetComponent<Camera>();
-        halfWidth = _camera.aspect * _camera.orthographicSize;
+        _halfWidth = _camera.aspect * _camera.orthographicSize;
     }
 
     public void Init(Transform target)
     {
         _cameraTarget = target;
-        _xLeftMaxCameraPosition = _mapController.LeftBorderMapPosition.x + halfWidth;
-        _xRighMaxCameraPosition = _mapController.RightBorderMapPosition.x - halfWidth;
-        availableCameraXPosRange = _mapController.MapHorizontalSize.x - halfWidth * 2;
+        _smoothTime = _gameConfig.PlayerConfig.CameraSmoothTime;
+        _leftMaxCameraPosition = _mapController.LeftBorderMapPosition + _halfWidth;
+        _rightMaxCameraPosition = _mapController.RightBorderMapPosition - _halfWidth;
+        _downMaxCameraPosition = _mapController.DownBorderMapYValue + _camera.orthographicSize;
+        _upMaxCameraPosition = _mapController.UpBorderMapYValue;
     }
 
     private void LateUpdate()
@@ -49,9 +51,8 @@ public class PlayerCamera : MonoBehaviour
         if (_cameraTarget == null) return;
 
         var target = _cameraTarget.position + _offset;
-        target = new Vector3(Mathf.Clamp(target.x, _xLeftMaxCameraPosition, _xRighMaxCameraPosition), 
-            Mathf.Clamp(target.y, yDownEdge, yUpEdge), target.z);
-        transform.position = Vector3.SmoothDamp(transform.position, target, ref velocity, _smoothTime);
+        target = new Vector3(Mathf.Clamp(target.x, _leftMaxCameraPosition, _rightMaxCameraPosition), 
+            Mathf.Clamp(target.y, _downMaxCameraPosition, _upMaxCameraPosition), target.z);
+        transform.position = Vector3.SmoothDamp(transform.position, target, ref _velocity, _smoothTime);
     }
-
 }

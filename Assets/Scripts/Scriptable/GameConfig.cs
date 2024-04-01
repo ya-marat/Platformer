@@ -13,6 +13,8 @@ public class GameConfig : ScriptableObject
         [SerializeField] private float _jumpPower = 2f;
         [SerializeField] private float _fallMultiplier = .2f;
         [SerializeField] private float _jumpMultiplier = 0.5f;
+        [Header("Camera")]
+        [SerializeField] private float _cameraSmoothTime = 0.25f;
 
         public float MoveSpeed => _moveSpeed;
 
@@ -25,6 +27,7 @@ public class GameConfig : ScriptableObject
         public float FallMultiplier => _fallMultiplier;
 
         public float JumpMultiplier => _jumpMultiplier;
+        public float CameraSmoothTime => _cameraSmoothTime;
     }
 
     [SerializeField] private PlayerConfigData _playerConfigData;
