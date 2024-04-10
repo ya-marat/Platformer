@@ -15,19 +15,18 @@ public class GameConfig : ScriptableObject
         [SerializeField] private float _jumpMultiplier = 0.5f;
         [Header("Camera")]
         [SerializeField] private float _cameraSmoothTime = 0.25f;
+        [SerializeField] private float _xCameraOffset = 0.0f;
+        [SerializeField] private float _xCameraOffsetSmooth = 0.0f;
 
         public float MoveSpeed => _moveSpeed;
-
         public LayerMask GroundCheckLayers => _groundCheckLayers;
-
         public float JumpTime => _jumpTime;
-
         public float JumpPower => _jumpPower;
-
         public float FallMultiplier => _fallMultiplier;
-
         public float JumpMultiplier => _jumpMultiplier;
         public float CameraSmoothTime => _cameraSmoothTime;
+        public float XCameraOffset => _xCameraOffset;
+        public float XCameraOffsetSmooth => _xCameraOffsetSmooth;
     }
 
     [SerializeField] private PlayerConfigData _playerConfigData;

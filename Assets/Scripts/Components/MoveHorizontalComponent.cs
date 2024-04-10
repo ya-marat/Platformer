@@ -2,7 +2,7 @@ using System;
 using UniRx;
 using UnityEngine;
 
-public class MoveHorizontalComponent : BaseCharacterComponent
+public class MoveHorizontalComponent : BaseCharacterComponent, IMoveDirection
 {
     private Vector2 _currentMoveDirection;
     private ICommandStatus<Vector2> _moveCommandStatus;

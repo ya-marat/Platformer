@@ -21,4 +21,6 @@ MonoBehaviour:
     _jumpPower: 6.34
     _fallMultiplier: 0.2
     _jumpMultiplier: 0.5
-    _cameraSmoothTime: 10
+    _cameraSmoothTime: 2
+    _xCameraOffset: 12
+    _xCameraOffsetSmooth: 5

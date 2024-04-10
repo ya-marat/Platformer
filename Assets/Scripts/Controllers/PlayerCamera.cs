@@ -21,6 +21,8 @@ public class PlayerCamera : MonoBehaviour
     private float _leftMaxCameraPosition;
     private float _upMaxCameraPosition;
     private float _downMaxCameraPosition;
+    private IMoveDirection _moveDirection;
+    private float _currentMoveDirectionValue;
     
     public float LeftEdgeCameraPosition => -_halfWidth + transform.position.x;
     public float DownEdgeCameraPosition => -_camera.orthographicSize + transform.position.y;
@@ -36,9 +38,10 @@ public class PlayerCamera : MonoBehaviour
         _halfWidth = _camera.aspect * _camera.orthographicSize;
     }
 
-    public void Init(Transform target)
+    public void Init(Transform target, IMoveDirection moveDirection)
     {
         _cameraTarget = target;
+        _moveDirection = moveDirection;
         _smoothTime = _gameConfig.PlayerConfig.CameraSmoothTime;
         _leftMaxCameraPosition = _mapController.LeftBorderMapPosition + _halfWidth;
         _rightMaxCameraPosition = _mapController.RightBorderMapPosition - _halfWidth;
@@ -49,9 +52,23 @@ public class PlayerCamera : MonoBehaviour
     {
         if (_cameraTarget == null) return;
 
+        _offset.x = Mathf.Lerp(_offset.x, GetSideOffsetByDirection(), _gameConfig.PlayerConfig.XCameraOffsetSmooth * Time.deltaTime);
         var target = _cameraTarget.position + _offset;
-        target = new Vector3(Mathf.Clamp(target.x, _leftMaxCameraPosition, _rightMaxCameraPosition), 
-            Mathf.Clamp(target.y, _downMaxCameraPosition, _upMaxCameraPosition), target.z);
+        target = new Vector3(
+            Mathf.Clamp(target.x, _leftMaxCameraPosition, _rightMaxCameraPosition), 
+            Mathf.Clamp(target.y, _downMaxCameraPosition, _upMaxCameraPosition), 
+            target.z);
+        
         transform.position = Vector3.SmoothDamp(transform.position, target, ref _velocity, _smoothTime * Time.deltaTime);
+    }
+
+    private float GetSideOffsetByDirection()
+    {
+        if (Mathf.Abs(_moveDirection.MoveDirection.x) > 0.1f)
+        {
+            _currentMoveDirectionValue = _moveDirection.MoveDirection.x;
+        }
+        
+        return _gameConfig.PlayerConfig.XCameraOffset * (_currentMoveDirectionValue > 0 ? 1 : -1);
     }
 }

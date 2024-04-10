@@ -17,7 +17,7 @@ public class GameService : IInitializable
     {
         _mapController.Init();
         PlayerEntity = _spawnEntitiesService.SpawnPlayerEntity();
-        _playerCamera.Init(PlayerEntity.EntityTransform);
+        _playerCamera.Init(PlayerEntity.EntityTransform, PlayerEntity.ComponentsHolder.GetComponent<MoveHorizontalComponent>());
         _backgroundController.Init();
     }
 }
