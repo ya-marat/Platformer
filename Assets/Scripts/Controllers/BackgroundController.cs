@@ -53,7 +53,5 @@ public class BackgroundController : MonoBehaviour
         var yDistance = Mathf.Abs(_playerCamera.DownMaxCameraPosition - transformPosition.y);
         normalizedValueX = Mathf.Clamp01(xDistance / _playerCamera.XAvailableCameraPosRange);
         normalizedValueY =  Mathf.Clamp01(yDistance / _playerCamera.YAvailableCameraPosRange);
-        
-        Debug.Log($"normal {normalizedValueX} {normalizedValueY}");
     }
 }
